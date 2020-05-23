@@ -7,6 +7,16 @@ const todoControl = document.querySelector ('.todo-control'),
 //Save data
 let obj = JSON.parse(localStorage.getItem('obj'));
 
+//Get cookie
+function getCookie(name) {
+    let matches = document.cookie.match(new RegExp(
+      "(?:^|; )" + name.replace(/([\.$?*|{}\(\)\[\]\\\/\+^])/g, '\\$1') + "=([^;]*)"
+    ));
+    return console.log(matches ? decodeURIComponent(matches[1]) : undefined);
+}
+
+let cookie = getCookie('dataToDo');
+
 const render = () => {
     todoList.textContent="";
     todoCompleted.textContent="";
@@ -30,9 +40,11 @@ const render = () => {
         (e.completed) ? todoCompleted.append(li) : todoList.append(li);
     });
 
-    //To LS
+    //JSON to Cookie
     localStorage.obj = JSON.stringify(obj);
+    document.cookie = "dataToDo=" + JSON.stringify(localStorage.obj) + "; expires=" + (new Date(Date.now() + 7 * 86400000).toGMTString());
 }; render();
+
 
 todoControl.addEventListener('submit', e => {
     e.preventDefault();
